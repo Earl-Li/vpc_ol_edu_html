@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../vpc_ol_js"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "vpc_ol_js"
+	}
+}
