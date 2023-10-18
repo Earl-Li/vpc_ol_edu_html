@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atlisheng.eduservice.mapper.EduCourseMapper">
+    <select id="getPublishConfirmCourseInfo" resultType="com.atlisheng.eduservice.entity.bo.course.PublishConfirmCourseInfo">
+        SELECT
+            ec.id,ec.title,ec.price,ec.course_total_time,ec.cover,et.name teacherName,es1.title firstLevelSubject,es2.title secondLevelSubject
+        FROM
+            edu_course ec
+            LEFT OUTER JOIN
+                edu_course_description ecd
+                ON
+                    ec.id=ecd.id
+            LEFT OUTER JOIN
+                edu_teacher et
+                ON
+                    ec.teacher_id=et.id
+            LEFT OUTER JOIN
+                edu_subject es1
+                ON
+                    ec.subject_parent_id=es1.id
+            LEFT OUTER JOIN
+                edu_subject es2
+                ON
+                    ec.subject_id=es2.id
+        WHERE
+            ec.id=#{courseId}
+    </select>
+    <select id="getFrontCourseInfoByCourseId" resultType="com.atlisheng.eduservice.entity.bo.course.FrontCourseInfo">
+        SELECT
+            cou.id,
+            cou.title,
+            cou.cover,
+            CONVERT(cou.price, DECIMAL(8,2)) AS price,
+            cou.course_total_time AS courseTotalTime,
+            cou.cover,
+            cou.buy_count AS buyCount,
+            cou.view_count AS viewCount,
+            coudes.description,
+            tea.id AS teacherId,
+            tea.name AS teacherName,
+            tea.intro,
+            tea.avatar,
+            subj1.id AS firstLevelSubjectId,
+            subj1.title AS firstLevelSubjectTitle,
+            subj2.id AS secondLevelSubjectId,
+            subj2.title AS secondLevelSubjectTitle
+        FROM
+            edu_course cou
+                LEFT JOIN edu_course_description coudes ON cou.id = coudes.id
+                LEFT JOIN edu_teacher tea ON cou.teacher_id = tea.id
+                LEFT JOIN edu_subject subj1 ON cou.subject_parent_id = subj1.id
+                LEFT JOIN edu_subject subj2 ON cou.subject_id = subj2.id
+        WHERE
+            cou.id = #{courseId}
+    </select>
+</mapper>
